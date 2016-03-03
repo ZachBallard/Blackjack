@@ -8,5 +8,22 @@ namespace Blackjack
 {
     class Dealer
     {
+        public List<Card> hand { get; set; }
+        public bool isShowing { get; set; }
+
+        public void dealTable()
+        {
+
+        }
+        public void dealCard(bool isPlayerTurn)
+        {
+
+        }
+
+        public int CheckPoints()
+        {
+
+        }
     }
+
 }

@@ -8,5 +8,17 @@ namespace Blackjack
 {
     class Deck
     {
+        public int numOfDecks { get; set; }
+        public List<Card> mainDeck { get; set; }
+        public List<Card> discardDeck { get; set; }
+
+        public void Build()
+        {
+
+        }
+        public void Shuffle()
+        {
+
+        }
     }
-}
+ }

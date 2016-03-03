@@ -8,5 +8,15 @@ namespace Blackjack
 {
     class Player
     {
+        public string name { get; set; }
+        public int money { get; set; }
+        public List<Card> hand { get; set; }
+        public int splitValue { get;set; }
+        public bool isSplit { get; set; }
+
+        public int checkPoints()
+        {
+            return;
+        }
     }
 }

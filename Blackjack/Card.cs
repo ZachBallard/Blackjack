@@ -40,7 +40,11 @@ namespace Blackjack
         {
             suit = s;
             rank = r;
-            if(r <= 10)
+            if(r == 1)
+            {
+                cardValue = 11;
+            }
+            else if (r <= 10 && r >1)
             {
                 cardValue = r;
             }

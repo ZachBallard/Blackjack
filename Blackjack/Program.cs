@@ -34,8 +34,6 @@ namespace Blackjack
                 //actual dealing
                 while (true)
                 {
-                    bool isShowingTwo = true;
-
                     numOfGames++;
 
                     player.bet = askForBet(player.money);
@@ -43,21 +41,49 @@ namespace Blackjack
                     if (deck.mainDeck.Count >= 2)
                     {
                         //take 2 card from deck and put in  player hand
+                        Card a = deck.mainDeck.First();
+                        Card b = deck.mainDeck.First();
+                        player.hand.Add(a);
+                        player.hand.Add(b);
+                        deck.mainDeck.RemoveAt(0);
+                        deck.mainDeck.RemoveAt(0);
                     }
                     else
                     {
                         //put discard in maindeck and reshuffle
+                        deck.mainDeck.AddRange(deck.discardDeck);
+                        deck.discardDeck.Clear();
                         //take 2 card from deck and put in  player hand
+                        Card a = deck.mainDeck.First();
+                        Card b = deck.mainDeck.First();
+                        player.hand.Add(a);
+                        player.hand.Add(b);
+                        deck.mainDeck.RemoveAt(0);
+                        deck.mainDeck.RemoveAt(0);
                     }
 
                     if (deck.mainDeck.Count >= 2)
                     {
                         //take  2 card from deck and put in  dealer hand
+                        Card a = deck.mainDeck.First();
+                        Card b = deck.mainDeck.First();
+                        dealer.hand.Add(a);
+                        dealer.hand.Add(b);
+                        deck.mainDeck.RemoveAt(0);
+                        deck.mainDeck.RemoveAt(0);
                     }
                     else
                     {
                         //put discard in maindeck and reshuffle
+                        deck.mainDeck.AddRange(deck.discardDeck);
+                        deck.discardDeck.Clear();
                         //take 2 card from deck and put in dealer hand
+                        Card a = deck.mainDeck.First();
+                        Card b = deck.mainDeck.First();
+                        dealer.hand.Add(a);
+                        dealer.hand.Add(b);
+                        deck.mainDeck.RemoveAt(0);
+                        deck.mainDeck.RemoveAt(0);
                     }
 
                     displayGraphics(dealer.isShowing);
@@ -159,6 +185,12 @@ namespace Blackjack
                             }
                         }
                     }
+                    //put both hands in discard
+                    deck.discardDeck.AddRange(player.hand);
+                    player.hand.Clear();
+
+                    deck.discardDeck.AddRange(dealer.hand);
+                    dealer.hand.Clear();
 
                     //check for results
                     if (blackjack || hasSix || CheckPoints(player.hand) > CheckPoints(dealer.hand))
@@ -195,11 +227,23 @@ namespace Blackjack
 
         private static int CheckPoints(List<Card> hand)
         {
-            int total = 0;
+            //remember to check for ace making bust
 
+            bool hasAce = false;
+            int total = 0;
+                        
             foreach (var card in hand)
             {
+                if (card.cardValue == 11)
+                {
+                    hasAce = true;
+                }
+
                 total += card.cardValue;
+            }
+            if(total > 21 && hasAce)
+            {
+                total -= 10;
             }
 
             return total;

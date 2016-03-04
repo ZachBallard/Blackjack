@@ -34,12 +34,20 @@ namespace Blackjack
             King = 13
          */
 
-        public string cardGraphic { get; set; }
+        public int cardValue { get; set; }
 
         public Card(int s, int r)
         {
             suit = s;
             rank = r;
+            if(r <= 10)
+            {
+                cardValue = r;
+            }
+            else
+            {
+                cardValue = 10;
+            }
         }
         
         /* __________

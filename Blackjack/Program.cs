@@ -27,20 +27,37 @@ namespace Blackjack
             while (!exit)
             {
                 var deck = new Deck(getDeckNumber());
-                
+
                 player.money = howMuchMoney();
                 int startMoney = player.money;
 
                 //actual dealing
                 while (true)
                 {
-                    bool isPlayerTurn = true;
 
                     numOfGames++;
 
                     player.bet = askForBet(player.money);
 
-                    dealer.DealCard(isPlayerTurn);
+                    if (deck.mainDeck.Count >= 2)
+                    {
+                        //take 2 card from deck and put in  player hand
+                    }
+                    else
+                    {
+                        //put discard in maindeck and reshuffle
+                        //take 2 card from deck and put in  player hand
+                    }
+
+                    if (deck.mainDeck.Count >= 2)
+                    {
+                        //take  2 card from deck and put in  dealer hand
+                    }
+                    else
+                    {
+                        //put discard in maindeck and reshuffle
+                        //take 2 card from deck and put in dealer hand
+                    }
 
                     displayGraphics(dealer.isShowing);
 
@@ -60,6 +77,7 @@ namespace Blackjack
                     //handle hit or stay
                     bool hasSix = false;
 
+                    //player begins hit chain
                     if (!blackjack)
                     {
                         while (true)
@@ -76,7 +94,15 @@ namespace Blackjack
                             }
                             if (doHit())
                             {
-                                dealer.DealCard(isPlayerTurn);
+                                if(deck.mainDeck.Count >= 1)
+                                {
+                                    //take card from deck and put in  player hand
+                                }
+                                else
+                                {
+                                    //put discard in maindeck and reshuffle
+                                    //take card from deck and put in  player hand
+                                }
                             }
                             else
                             {
@@ -112,10 +138,20 @@ namespace Blackjack
                                 player.money -= player.bet;
                             }
 
+                            //dealer begins hit chain
                             while (CheckPoints(dealer.hand) < 18)
                             {
-                                dealer.DealCard(isPlayerTurn);
-                                if (dealer.CheckPoints() >= 21)
+                                if (deck.mainDeck.Count >= 1)
+                                {
+                                    //take card from deck and put in dealer hand
+                                }
+                                else
+                                {
+                                    //put discard in maindeck and reshuffle
+                                    //take card from deck and put in dealer hand
+                                }
+
+                                if (CheckPoints(dealer.hand) >= 21)
                                 {
                                     break;
                                 }
@@ -124,7 +160,7 @@ namespace Blackjack
                     }
 
                     //check for results
-                    if (blackjack || hasSix || CheckPoints(player.hand) > dealer.CheckPoints())
+                    if (blackjack || hasSix || CheckPoints(player.hand) > CheckPoints(dealer.hand))
                     {
                         //show money gained
                         player.money += player.bet;
@@ -158,7 +194,14 @@ namespace Blackjack
 
         private static int CheckPoints(List<Card> hand)
         {
-            //add up all cards in hand values
+            int total = 0;
+
+            foreach (var card in hand)
+            {
+                total += card.cardValue;
+            }
+
+            return total;
         }
 
         private static bool playAgain(string playerName)
@@ -231,7 +274,7 @@ namespace Blackjack
                 }
             }
         }
-      
+
         /* private static bool willSplit()
          {
              return true;
@@ -330,7 +373,7 @@ namespace Blackjack
 
         private static void showResults(int startMoney, int money, int numOfGames, int playerWins, int dealerWins)
         {
-            if(money <= 0)
+            if (money <= 0)
             {
                 Console.WriteLine(@".------.------.------.------.------.------.     .------.------.------.------.------.------.");
                 Console.WriteLine(@"|Y.--. |O.--. |U.--. |'.--. |R.--. |E.--. |.-.  |B.--. |R.--. |O.--. |K.--. |E.--. |!.--. |");
@@ -340,7 +383,7 @@ namespace Blackjack
                 Console.WriteLine(@"`------`------`------`------`------`------'  '-'`------`------`------`------`------`------'");
                 Console.WriteLine(@"(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)0");
             }
-            else if(money > startMoney)
+            else if (money > startMoney)
             {
                 Console.WriteLine(@"  ______              __            _______            __        __  __ ");
                 Console.WriteLine(@" /      \            |  \          |       \          |  \      |  \|  \");

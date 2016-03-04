@@ -8,7 +8,10 @@ namespace Blackjack
 {
     class Card
     {
-        enum suit
+        private Suit s;
+        private Rank r;
+
+        public enum Suit
         {
             HEARTS = 0,
             SPADES = 1,
@@ -16,7 +19,7 @@ namespace Blackjack
             DIAMOND = 3,
         };
 
-        enum rank
+        public enum Rank
         {
             Ace= 1,
             Two = 2,
@@ -32,6 +35,16 @@ namespace Blackjack
             Queen = 12,
             King = 13
         };
+
+        public Card(Suit s, Rank r)
+        {
+            Random random = new Random();
+            s = random.Next(0, 3);
+            r = random.Next(0, 13);
+
+            this.s = s;
+            this.r = r;
+        }
 
         /* __________
           |          |

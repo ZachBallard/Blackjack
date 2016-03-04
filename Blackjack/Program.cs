@@ -34,6 +34,7 @@ namespace Blackjack
                 int startMoney = player.money;
 
                 deck.Build();
+                deck.Shuffle();
 
                 //actual dealing
                 while (true)
@@ -42,7 +43,7 @@ namespace Blackjack
 
                     numOfGames++;
 
-                    deck.Shuffle();
+                    
 
                     player.bet = askForBet(player.money);
 

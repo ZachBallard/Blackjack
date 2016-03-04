@@ -14,11 +14,17 @@ namespace Blackjack
 
         public void Build()
         {
-
+            foreach (Card.Rank r in Enum.GetValues(typeof(Card.Rank)))
+            {
+                foreach (Card.Suit s in Enum.GetValues(typeof(Card.Suit)))
+                {
+                    mainDeck.Add(new Card(s, r));
+                }
+            }
         }
         public void Shuffle()
         {
-
+            mainDeck.OrderBy(x => Guid.NewGuid()).ToList();
         }
     }
  }

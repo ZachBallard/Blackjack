@@ -15,6 +15,7 @@ namespace Blackjack
         {
 
         }
+
         public void DealCard(bool isPlayerTurn)
         {
 

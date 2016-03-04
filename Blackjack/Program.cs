@@ -53,6 +53,9 @@ namespace Blackjack
                         //put discard in maindeck and reshuffle
                         deck.mainDeck.AddRange(deck.discardDeck);
                         deck.discardDeck.Clear();
+
+                        deck.Shuffle();
+
                         //take 2 card from deck and put in  player hand
                         Card a = deck.mainDeck.First();
                         Card b = deck.mainDeck.First();
@@ -77,6 +80,9 @@ namespace Blackjack
                         //put discard in maindeck and reshuffle
                         deck.mainDeck.AddRange(deck.discardDeck);
                         deck.discardDeck.Clear();
+
+                        deck.Shuffle();
+
                         //take 2 card from deck and put in dealer hand
                         Card a = deck.mainDeck.First();
                         Card b = deck.mainDeck.First();
@@ -101,7 +107,7 @@ namespace Blackjack
                     //not going to impliment at this time
                     //player.isSplit = willSplit();
 
-                    //handle hit or stay
+                    //handle six card charlie rule (currently only six. could change to any.)
                     bool hasSix = false;
 
                     //player begins hit chain
@@ -124,11 +130,22 @@ namespace Blackjack
                                 if(deck.mainDeck.Count >= 1)
                                 {
                                     //take card from deck and put in  player hand
+                                    Card a = deck.mainDeck.First();
+                                    player.hand.Add(a);
+                                    deck.mainDeck.RemoveAt(0);
                                 }
                                 else
                                 {
-                                    //put discard in maindeck and reshuffle
+                                    //put discard in maindeck and 
+                                    deck.mainDeck.AddRange(deck.discardDeck);
+                                    deck.discardDeck.Clear();
+
+                                    deck.Shuffle();
+
                                     //take card from deck and put in  player hand
+                                    Card a = deck.mainDeck.First();
+                                    player.hand.Add(a);
+                                    deck.mainDeck.RemoveAt(0);
                                 }
                             }
                             else
@@ -166,16 +183,28 @@ namespace Blackjack
                             }
 
                             //dealer begins hit chain
-                            while (CheckPoints(dealer.hand) < 18)
+                            while (CheckPoints(dealer.hand) < 16)
                             {
                                 if (deck.mainDeck.Count >= 1)
                                 {
                                     //take card from deck and put in dealer hand
+                                    Card a = deck.mainDeck.First();
+                                    dealer.hand.Add(a);
+                                    deck.mainDeck.RemoveAt(0);
                                 }
                                 else
                                 {
                                     //put discard in maindeck and reshuffle
+
+                                    deck.mainDeck.AddRange(deck.discardDeck);
+                                    deck.discardDeck.Clear();
+
+                                    deck.Shuffle();
+
                                     //take card from deck and put in dealer hand
+                                    Card a = deck.mainDeck.First();
+                                    dealer.hand.Add(a);
+                                    deck.mainDeck.RemoveAt(0);
                                 }
 
                                 if (CheckPoints(dealer.hand) >= 21)

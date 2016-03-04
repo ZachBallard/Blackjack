@@ -34,6 +34,7 @@ namespace Blackjack
                 //actual dealing
                 while (true)
                 {
+                    bool isShowingTwo = true;
 
                     numOfGames++;
 
@@ -226,7 +227,7 @@ namespace Blackjack
             }
         }
 
-        private static void displayGraphics(bool dealerShowing)
+        private static void displayGraphics(bool dealerShowing, ,)
         {
             throw new NotImplementedException();
         }

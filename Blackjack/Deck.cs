@@ -12,19 +12,32 @@ namespace Blackjack
         public List<Card> mainDeck { get; set; }
         public List<Card> discardDeck { get; set; }
 
-        public void Build()
+        public Deck(int deckNumber)
         {
-            foreach (Card.Rank r in Enum.GetValues(typeof(Card.Rank)))
+            numOfDecks = deckNumber;
+            mainDeck = Build();
+            mainDeck = Shuffle();
+        }
+
+        public List<Card> Build()
+        {
+            for(int i = 0; i <= numOfDecks; i++)
             {
-                foreach (Card.Suit s in Enum.GetValues(typeof(Card.Suit)))
+                for(int j = 1; j <= 4; j++)
                 {
-                    mainDeck.Add(new Card(s, r));
+                    for (int k = 0; j <= 13; k++)
+                    {
+                        mainDeck.Add(new Card(j, k));
+                    }
                 }
             }
+
+            return mainDeck;
         }
-        public void Shuffle()
+        public List<Card> Shuffle()
         {
             mainDeck.OrderBy(x => Guid.NewGuid()).ToList();
+            return mainDeck;
         }
     }
- }
+}

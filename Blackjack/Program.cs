@@ -26,15 +26,10 @@ namespace Blackjack
             //game setup
             while (!exit)
             {
-                var deck = new Deck();
-
-                deck.numOfDecks = getDeckNumber();
-
+                var deck = new Deck(getDeckNumber());
+                
                 player.money = howMuchMoney();
                 int startMoney = player.money;
-
-                deck.Build();
-                deck.Shuffle();
 
                 //actual dealing
                 while (true)
@@ -42,8 +37,6 @@ namespace Blackjack
                     bool isPlayerTurn = true;
 
                     numOfGames++;
-
-                    
 
                     player.bet = askForBet(player.money);
 
@@ -55,7 +48,7 @@ namespace Blackjack
 
                     bool blackjack = false;
 
-                    if (player.CheckPoints() == 21)
+                    if (CheckPoints(player.hand) == 21)
                     {
                         player.money += player.bet;
                         blackjack = true;
@@ -71,7 +64,7 @@ namespace Blackjack
                     {
                         while (true)
                         {
-                            if (player.CheckPoints() > 21)
+                            if (CheckPoints(player.hand) > 21)
                             {
                                 player.money -= player.bet;
                                 break;
@@ -114,12 +107,12 @@ namespace Blackjack
                             displayGraphics(dealer.isShowing);
 
 
-                            if (dealer.CheckPoints() == 21)
+                            if (CheckPoints(dealer.hand) == 21)
                             {
                                 player.money -= player.bet;
                             }
 
-                            while (dealer.CheckPoints() < 18)
+                            while (CheckPoints(dealer.hand) < 18)
                             {
                                 dealer.DealCard(isPlayerTurn);
                                 if (dealer.CheckPoints() >= 21)
@@ -131,7 +124,7 @@ namespace Blackjack
                     }
 
                     //check for results
-                    if (blackjack || hasSix || player.CheckPoints() > dealer.CheckPoints())
+                    if (blackjack || hasSix || CheckPoints(player.hand) > dealer.CheckPoints())
                     {
                         //show money gained
                         player.money += player.bet;
@@ -159,7 +152,35 @@ namespace Blackjack
                 }//actual dealing over
 
                 showResults(startMoney, player.money, numOfGames, playerWins, dealerWins);
+                exit = playAgain(player.name);
             }//app close
+        }
+
+        private static int CheckPoints(List<Card> hand)
+        {
+            //add up all cards in hand values
+        }
+
+        private static bool playAgain(string playerName)
+        {
+            string userInput = "";
+
+            while (true)
+            {
+                Console.WriteLine($"\nWould you like to try again {playerName}? (y)es or (n)o");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "y":
+                        return false;
+                    case "n":
+                        return true;
+                    default:
+                        Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                        break;
+                }
+            }
         }
 
         private static void displayGraphics(bool dealerShowing)

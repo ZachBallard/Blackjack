@@ -15,10 +15,5 @@ namespace Blackjack
         public bool isSplit { get; set; }
         public int bet { get; set; }
 
-        public int CheckPoints()
-        {
-            //remember is ace 1 or 11
-            return 0;
-        }
     }
 }

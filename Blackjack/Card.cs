@@ -8,20 +8,18 @@ namespace Blackjack
 {
     class Card
     {
-        private Suit s;
-        private Rank r;
 
-        public enum Suit
-        {
-            HEARTS = 0,
-            SPADES = 1,
-            CLUBS = 2,
-            DIAMOND = 3,
-        };
+        public int suit { get;set; }
 
-        public enum Rank
-        {
-            Ace= 1,
+        /* HEARTS = 1,
+           SPADES = 2,
+           CLUBS = 3,
+           DIAMOND = 4,
+         */
+
+        public int rank { get; set; }
+  
+         /* Ace= 1,
             Two = 2,
             Three = 3,
             Four = 4,
@@ -34,18 +32,16 @@ namespace Blackjack
             Jack = 11,
             Queen = 12,
             King = 13
-        };
+         */
 
-        public Card(Suit s, Rank r)
+        public string cardGraphic { get; set; }
+
+        public Card(int s, int r)
         {
-            Random random = new Random();
-            s = random.Next(0, 3);
-            r = random.Next(0, 13);
-
-            this.s = s;
-            this.r = r;
+            suit = s;
+            rank = r;
         }
-
+        
         /* __________
           |          |
           | {r}  {r} |

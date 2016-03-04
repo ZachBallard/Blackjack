@@ -11,18 +11,19 @@ namespace Blackjack
         public List<Card> hand { get; set; }
         public bool isShowing { get; set; }
 
-        public void dealTable()
+        public void DealTable()
         {
 
         }
-        public void dealCard(bool isPlayerTurn)
+        public void DealCard(bool isPlayerTurn)
         {
 
         }
 
         public int CheckPoints()
         {
-
+            //remember ace is 1 or 11
+            return 0;
         }
     }
 

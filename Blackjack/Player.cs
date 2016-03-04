@@ -13,10 +13,12 @@ namespace Blackjack
         public List<Card> hand { get; set; }
         public int splitValue { get;set; }
         public bool isSplit { get; set; }
+        public int bet { get; set; }
 
-        public int checkPoints()
+        public int CheckPoints()
         {
-            return;
+            //remember is ace 1 or 11
+            return 0;
         }
     }
 }

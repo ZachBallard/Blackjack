@@ -10,107 +10,204 @@ namespace Blackjack
     {
         static void Main(string[] args)
         {
+            var player = new Player();
+            var dealer = new Dealer();
 
             welcomeScreen();
-            whatIsName();
+
+            player.name = whatIsName();
 
             bool exit = false;
 
+            int playerWins = 0;
+            int dealerWins = 0;
+            int numOfGames = 0;
+
+            //game setup
             while (!exit)
             {
-                getDeckNumber();
-                howMuchMoney();
-
-                var player = new Player();
-                var dealer = new Dealer();
                 var deck = new Deck();
 
+                deck.numOfDecks = getDeckNumber();
+
+                player.money = howMuchMoney();
+                int startMoney = player.money;
+
+                deck.Build();
+
+                //actual dealing
                 while (true)
                 {
                     bool isPlayerTurn = true;
 
-                    askForBet();
+                    numOfGames++;
 
-                    deck.Build();
                     deck.Shuffle();
 
-                    dealer.dealCard();
+                    player.bet = askForBet(player.money);
+
+                    dealer.DealCard(isPlayerTurn);
 
                     displayGraphics(dealer.isShowing);
 
-                    if (player.checkPoints() == 21)
-                    {
+                    //check for blackjack
 
+                    bool blackjack = false;
+
+                    if (player.CheckPoints() == 21)
+                    {
+                        player.money += player.bet;
+                        blackjack = true;
                     }
 
-                    if (player.isSplit)
-                    {
+                    //not going to impliment at this time
+                    //player.isSplit = willSplit();
 
+                    //handle hit or stay
+                    bool hasSix = false;
+
+                    if (!blackjack)
+                    {
+                        while (true)
+                        {
+                            if (player.CheckPoints() > 21)
+                            {
+                                player.money -= player.bet;
+                                break;
+                            }
+                            if (player.hand.Count >= 6)
+                            {
+                                hasSix = true;
+                                break;
+                            }
+                            if (doHit())
+                            {
+                                dealer.DealCard(isPlayerTurn);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        /*while (player.isSplit)
+                        {
+                            if (player.CheckPoints() > 21)
+                            {
+                                break;
+                            }
+                            if (hitStay())
+                            {
+                                dealer.DealCard(isPlayerTurn);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }*/
+
+                        if (!hasSix)
+                        {
+                            dealer.isShowing = true;
+
+                            displayGraphics(dealer.isShowing);
+
+
+                            if (dealer.CheckPoints() == 21)
+                            {
+                                player.money -= player.bet;
+                            }
+
+                            while (dealer.CheckPoints() < 18)
+                            {
+                                dealer.DealCard(isPlayerTurn);
+                                if (dealer.CheckPoints() >= 21)
+                                {
+                                    break;
+                                }
+                            }
+                        }
                     }
 
-                    player.isSplit = willSplit();
-
-                    while (true)
+                    //check for results
+                    if (blackjack || hasSix || player.CheckPoints() > dealer.CheckPoints())
                     {
-                        if (player.checkPoints() > 21)
-                        {
-                            break;
-                        }
-                        if (hitStay())
-                        {
-                            dealer.dealCard(isPlayerTurn);
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        //show money gained
+                        player.money += player.bet;
+                        playerWins++;
+                    }
+                    else
+                    {
+                        //show money lost
+                        player.money -= player.bet;
+                        dealerWins++;
                     }
 
-                    while (player.isSplit)
+                    //how to stop dealing
+                    if (player.money < 0)
                     {
-                        if (player.checkPoints() > 21)
-                        {
-                            break;
-                        }
-                        if (hitStay())
-                        {
-                            dealer.dealCard(isPlayerTurn);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    dealer.isShowing = true;
-
-                    displayGraphics(dealer.isShowing);
-
-                    if (dealer.CheckPoints() == 21)
-                    {
+                        //show lost all money
                         break;
                     }
 
-                    while (dealer.CheckPoints() < 18)
+                    if (!dealAgain())
                     {
-                        dealer.dealCard(isPlayerTurn);
-                        if(dealer.CheckPoints >= 21)
-                        {
-                            break;
-                        }
+                        exit = true;
+                        break;
                     }
+                }//actual dealing over
 
+                showResults(startMoney, player.money, numOfGames, playerWins, dealerWins);
+            }//app close
+        }
 
-                    //check win
+        private static void showResults(int startMoney, int money, int numOfGames, int playerWins, int dealerWins)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool dealAgain()
+        {
+            string userInput = "";
+
+            while (true)
+            {
+                Console.WriteLine("\nWould you like to deal again? (y)es or (n)o");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "y":
+                        return false;
+                    case "n":
+                        return true;
+                    default:
+                        Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                        break;
                 }
-
             }
         }
 
-
-        private static bool hitStay()
+        private static bool doHit()
         {
-            throw new NotImplementedException();
+            string userInput = "";
+
+            while (true)
+            {
+                Console.WriteLine($"\nWould you like to (h)it or (s)tay?");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "h":
+                        return true;
+                    case "s":
+                        return false;
+                    default:
+                        Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                        break;
+                }
+            }
         }
 
         private static void displayGraphics(bool dealerShowing)
@@ -118,34 +215,100 @@ namespace Blackjack
             throw new NotImplementedException();
         }
 
-        private static bool willSplit()
+        /* private static bool willSplit()
+         {
+             return true;
+         }
+        */
+
+        public static int askForBet(int playerMoney)
         {
-            return true;
+            string userInput = "";
+
+            while (true)
+            {
+                Console.WriteLine($"\nHow much would you like to bet? (You have ${playerMoney} to bet)");
+                userInput = Console.ReadLine();
+
+                if (int.Parse(userInput) <= playerMoney)
+                {
+                    return int.Parse(userInput);
+                }
+                else if (int.Parse(userInput) > playerMoney)
+                {
+                    Console.WriteLine($"\nYou only have ${playerMoney} to bet!");
+                }
+                else
+                {
+                    Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                }
+            }
         }
 
-        public static void askForBet()
+        private static int howMuchMoney()
         {
-            throw new NotImplementedException();
+            string userInput = "";
+
+            while (true)
+            {
+                Console.WriteLine($"\nHow much money do you have to play with today?");
+                userInput = Console.ReadLine();
+
+                int i = 0;
+                bool isNumber = int.TryParse(userInput, out i);
+
+                if (isNumber)
+                {
+                    return i;
+                }
+                else
+                {
+                    Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                }
+            }
         }
 
-        private static void howMuchMoney()
+        private static int getDeckNumber()
         {
-            throw new NotImplementedException();
+            string userInput = "";
+
+            while (true)
+            {
+                Console.WriteLine($"\nWould you like to use (1) or (7) decks?");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        return 1;
+                    case "7":
+                        return 7;
+                    default:
+                        Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                        break;
+                }
+            }
         }
 
-        private static void getDeckNumber()
+        private static string whatIsName()
         {
-            throw new NotImplementedException();
-        }
+            string userInput = "";
 
-        private static void whatIsName()
-        {
-            throw new NotImplementedException();
+            Console.WriteLine($"\nWhat should we call you?");
+            userInput = Console.ReadLine();
+            return userInput;
         }
 
         private static void welcomeScreen()
         {
-            throw new NotImplementedException();
+            Console.WriteLine(@"  ___        __     ___            ____     __     ___          ");
+            Console.WriteLine(@" |   \ ||   //\\   //  \\ ||  //  \___ |   //\\   //  \\ ||  // ");
+            Console.WriteLine(@" |=--< ||  //__\\  ||     ||=||   _   ||  //__\\  ||     ||=||  ");
+            Console.WriteLine(@" |___/ ||=//    \\ \\__// ||  \\  \\__|/ //    \\ \\__// ||  \\ ");
+            Console.WriteLine(@" __ |_    ===== _   _ |_   ___   _       _   _ _|  The Iron Yard");
+            Console.WriteLine(@" __ |_| \/  // (_| (_ | |  ||_) (_| | | (_| | (_|   (3/3/2016)  ");
+            Console.WriteLine(@"       _/  //==            ||_)     | |              ^^^^^^^^   ");
+            Console.WriteLine(@"(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)");
         }
 
     }

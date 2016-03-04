@@ -305,9 +305,9 @@ namespace Blackjack
             Console.WriteLine(@" |   \ ||   //\\   //  \\ ||  //  \___ |   //\\   //  \\ ||  // ");
             Console.WriteLine(@" |=--< ||  //__\\  ||     ||=||   _   ||  //__\\  ||     ||=||  ");
             Console.WriteLine(@" |___/ ||=//    \\ \\__// ||  \\  \\__|/ //    \\ \\__// ||  \\ ");
-            Console.WriteLine(@" __ |_    ===== _   _ |_   ___   _       _   _ _|  The Iron Yard");
-            Console.WriteLine(@" __ |_| \/  // (_| (_ | |  ||_) (_| | | (_| | (_|   (3/3/2016)  ");
-            Console.WriteLine(@"       _/  //==            ||_)     | |              ^^^^^^^^   ");
+            Console.WriteLine(@" __ |_    ===== _   _ |_   ___   _       _   _ _| The Iron Yard ");
+            Console.WriteLine(@" __ |_| \/  // (_| (_ | |  ||_) (_| | | (_| | (_|  (3/3/2016)   ");
+            Console.WriteLine(@"       _/  //==            ||_)     | |             ^^^^^^^^    ");
             Console.WriteLine(@"(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)");
         }
 

@@ -92,7 +92,7 @@ namespace Blackjack
                         deck.mainDeck.RemoveAt(0);
                     }
 
-                    displayGraphics(dealer.isShowing);
+                    displayGraphics(dealer.isShowing, player.hand, dealer.hand);
 
                     //check for blackjack
 
@@ -120,11 +120,13 @@ namespace Blackjack
                                 player.money -= player.bet;
                                 break;
                             }
+
                             if (player.hand.Count >= 6)
                             {
                                 hasSix = true;
                                 break;
                             }
+
                             if (doHit())
                             {
                                 if(deck.mainDeck.Count >= 1)
@@ -254,25 +256,40 @@ namespace Blackjack
             }//app close
         }
 
+        private static void displayGraphics(bool isShowing, List<Card> hand1, List<Card> hand2)
+        {
+            /* __________
+              |          |
+              | {r}  {r} |
+              |          |
+              |  {suit}  |
+              |          |
+              | {r}  {r} |
+              |__________|        
+            */
+        }
+
         private static int CheckPoints(List<Card> hand)
         {
             //remember to check for ace making bust
 
             bool hasAce = false;
             int total = 0;
+            int aceCounter = 0;
                         
             foreach (var card in hand)
             {
                 if (card.cardValue == 11)
                 {
                     hasAce = true;
+                    aceCounter++;
                 }
 
                 total += card.cardValue;
             }
-            if(total > 21 && hasAce)
+            if (total > 21 && hasAce)
             {
-                total -= 10;
+                total -=  10*aceCounter;
             }
 
             return total;
@@ -298,11 +315,6 @@ namespace Blackjack
                         break;
                 }
             }
-        }
-
-        private static void displayGraphics(bool dealerShowing, ,)
-        {
-            throw new NotImplementedException();
         }
 
         private static bool dealAgain()

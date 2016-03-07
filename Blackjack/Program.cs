@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,28 @@ namespace Blackjack
                     player.money = 217;
                     startMoney = player.money;
                     deckNumber = 2;
+
+                    //Lay down the setup
+                    Console.Clear();
+                    Console.WriteLine("\nYou are $10,000 in debt to the wrong sort of people. Dangerous people, of course.");
+                    Console.WriteLine("\n...And you haven't been paying.");
+                    Console.WriteLine("\nYou managed to disappear for a while, but then they invited you're Mom over. By van and violence.");
+                    Console.WriteLine("Money or her life starts paying off the debt.");
+                    Console.WriteLine("\nThe wrong sort of people with your Mom have one possible weakness now. Tradition. You walk, head high, into");
+                    Console.WriteLine("their trap and invoke an old right of conflicting parties. The Right of The Gambler.");
+                    Console.WriteLine("\nYou've been fortunate in your ploy. The right was invoked and only two decks were available for your observed");
+                    Console.WriteLine("game choice: Blackjack. Still, it won't be easy...");
+                    Console.WriteLine("> Please type anything <");
+                    Console.ReadLine();
+
+                    Console.Clear();
+                    Console.WriteLine("\nYou have $217 dollars and enough time to play around 40 games.");
+                    Console.WriteLine("\nAs per The Right of the Gambler, more time can be bought with you're winnings. ");
+                    Console.WriteLine("\n$500 towards you're debt will get you enough for about 25 more games. ");
+                    Console.WriteLine("\nYou better get the money in time or your Mother will be a very sad topic. \n\nAnd you probably will be too...");
+                    Console.WriteLine("> Please type anything <");
+                    Console.ReadLine();
+                    Console.Clear();
                 }
 
                 var deck = new Deck(deckNumber);
@@ -57,18 +80,16 @@ namespace Blackjack
                 {
                     numOfGames++;
 
-                    if (player.money > 500)
+                    if (player.money > 500 && isStory)
                     {
                         willBuyTime = askForBuyTime();
 
                         if (willBuyTime)
                         {
                             player.money -= 500;
-                            gamesLeft += 20;
+                            gamesLeft += 25;
                             totalDebt -= 500;
                         }
-
-                        willBuyTime = false;
                     }
 
                     player.bet = askForBet(player.money);
@@ -562,11 +583,16 @@ namespace Blackjack
                         break;
                     }
 
-                    if (!dealAgain() || player.money >= totalDebt)
+                    if (isStory && player.money >= totalDebt)
                     {
-                        exit = true;
                         break;
                     }
+
+                    if (!dealAgain() && !isStory)
+                    {
+                        break;
+                    }
+
                 }//actual dealing over
 
                 showResults(startMoney, player.money, numOfGames, playerWins, dealerWins, isStory, totalDebt);
@@ -912,6 +938,8 @@ namespace Blackjack
 
         private static void showResults(int startMoney, int money, int numOfGames, int playerWins, int dealerWins, bool isStory, int totalDebt)
         {
+            Console.Clear();
+
             if (money <= 0)
             {
                 Console.WriteLine(@".------.------.------.------.------.------.     .------.------.------.------.------.------.");

@@ -27,7 +27,7 @@ namespace Blackjack
                 {
                     for (int k = 0; j <= 13; k++)
                     {
-                        mainDeck.Add(new Card(j, k));
+                        mainDeck.Add(new Card (j, k));
                     }
                 }
             }

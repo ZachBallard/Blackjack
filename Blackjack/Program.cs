@@ -19,23 +19,57 @@ namespace Blackjack
 
             bool exit = false;
             bool isdealerGraphicCall = false;
+            bool isStory = false;
+            bool willBuyTime = false;
 
             int playerWins = 0;
             int dealerWins = 0;
             int numOfGames = 0;
+            int gamesLeft = 40;
+            int startMoney = 0;
+            int deckNumber = 0;
+            int totalDebt = 10000;
 
             //game setup
             while (!exit)
             {
-                var deck = new Deck(getDeckNumber());
+    
+                isStory = isPlayingStory();
 
-                player.money = howMuchMoney();
-                int startMoney = player.money;
+                if (!isStory)
+                {
+                    player.money = howMuchMoney();
+                    startMoney = player.money;
+                    deckNumber = getDeckNumber();
+                    
+                }
+               else
+                {
+                    player.money = 217;
+                    startMoney = player.money;
+                    deckNumber = 2;
+                }
 
+                var deck = new Deck(deckNumber);
+                
                 //actual dealing
                 while (true)
                 {
                     numOfGames++;
+
+                    if (player.money > 500)
+                    {
+                        willBuyTime = askForBuyTime();
+
+                        if (willBuyTime)
+                        {
+                            player.money -= 500;
+                            gamesLeft += 20;
+                            totalDebt -= 500;
+                        }
+
+                        willBuyTime = false;
+                    }
 
                     player.bet = askForBet(player.money);
 
@@ -95,6 +129,9 @@ namespace Blackjack
 
                     //display graphics
                     Console.Clear();
+
+                    Console.WriteLine($"{player.name} has {gamesLeft} games left");
+
                     int currentPoints = 0;
 
                     if (currentPoints > 21)
@@ -198,6 +235,9 @@ namespace Blackjack
                         {
                             //display graphics
                             Console.Clear();
+
+                            Console.WriteLine($"{player.name} has {gamesLeft} games left");
+
                             currentPoints = CheckPoints(player.hand);
 
                             if (currentPoints > 21)
@@ -278,6 +318,9 @@ namespace Blackjack
                             {
                                 //display graphics
                                 Console.Clear();
+
+                                Console.WriteLine($"{player.name} has {gamesLeft} games left");
+
                                 currentPoints = CheckPoints(player.hand);
 
                                 if (currentPoints > 21)
@@ -381,6 +424,9 @@ namespace Blackjack
                             {
                                 //display graphics
                                 Console.Clear();
+
+                                Console.WriteLine($"{player.name} has {gamesLeft} games left");
+
                                 currentPoints = CheckPoints(player.hand);
 
                                 if (currentPoints > 21)
@@ -442,6 +488,9 @@ namespace Blackjack
 
                     //display graphics
                     Console.Clear();
+
+                    Console.WriteLine($"{player.name} has {gamesLeft} games left");
+
                     currentPoints = CheckPoints(player.hand);
 
                     if (currentPoints > 21)
@@ -486,6 +535,7 @@ namespace Blackjack
                         player.money += player.bet;
                         Console.WriteLine($"You now have ${player.money}");
                         playerWins++;
+                        gamesLeft--;
                     }
                     else
                     {
@@ -494,6 +544,7 @@ namespace Blackjack
                         player.money -= player.bet;
                         Console.WriteLine($"You now have ${player.money}");
                         dealerWins++;
+                        gamesLeft--;
                     }
 
                     //put both hands in discard
@@ -511,16 +562,60 @@ namespace Blackjack
                         break;
                     }
 
-                    if (!dealAgain())
+                    if (!dealAgain() || player.money >= totalDebt)
                     {
                         exit = true;
                         break;
                     }
                 }//actual dealing over
 
-                showResults(startMoney, player.money, numOfGames, playerWins, dealerWins);
+                showResults(startMoney, player.money, numOfGames, playerWins, dealerWins, isStory, totalDebt);
                 exit = playAgain(player.name);
             }//app close
+        }
+
+        private static bool askForBuyTime()
+        {
+            string userInput = "";
+
+            while (true)
+            {
+                Console.WriteLine($"\nWill you buy more time for $500? (y)es or (n)o");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "y":
+                        return true;
+                    case "n":
+                        return false;
+                    default:
+                        Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                        break;
+                }
+            }
+        }
+
+        private static bool isPlayingStory()
+        {
+            string userInput = "";
+
+            while (true)
+            {
+                Console.WriteLine($"\nWould you like to start Story Mode? (y)es or (n)o");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "y":
+                        return true;
+                    case "n":
+                        return false;
+                    default:
+                        Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                        break;
+                }
+            }
         }
 
         private static void displayGraphics(bool isShowing, List<Card> hand, bool isdealerGraphicCall)
@@ -815,7 +910,7 @@ namespace Blackjack
             Console.WriteLine(@"(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)(21)");
         }
 
-        private static void showResults(int startMoney, int money, int numOfGames, int playerWins, int dealerWins)
+        private static void showResults(int startMoney, int money, int numOfGames, int playerWins, int dealerWins, bool isStory, int totalDebt)
         {
             if (money <= 0)
             {
@@ -826,8 +921,9 @@ namespace Blackjack
                 Console.WriteLine(@"| '--'Y| '--'O| '--'U| '--''| '--'R| '--'E| ((0)| '--'B| '--'R| '--'O| '--'K| '--'E| '--'!|");
                 Console.WriteLine(@"`------`------`------`------`------`------'  '-'`------`------`------`------`------`------'");
                 Console.WriteLine(@"(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)0");
+                Console.WriteLine("\nAnd you're Mother is too. The worse sort of way.\nYou're sure to follow...");
             }
-            else if (money > startMoney)
+            else if (money > startMoney && !isStory)
             {
                 Console.WriteLine(@"  ______              __            _______            __        __  __ ");
                 Console.WriteLine(@" /      \            |  \          |       \          |  \      |  \|  \");
@@ -839,6 +935,27 @@ namespace Blackjack
                 Console.WriteLine(@"\$$    $$ \$$     \  \$$  $$      | $$      \$$    $$| $$ \$$    $$| $$\");
                 Console.WriteLine(@" \$$$$$$   \$$$$$$$   \$$$$        \$$       \$$$$$$$ \$$  \$$$$$$$ \$$/");
                 Console.WriteLine(@"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+            }
+            else if (isStory)
+            {
+                Console.WriteLine(@"          _______           _  _______  _______    _______  _______  _______          ");
+                Console.WriteLine(@"|\     /|(  ___  )|\     /|( )(  ____ )(  ____ \  (       )(  ___  )(       )         ");
+                Console.WriteLine(@"( \   / )| (   ) || )   ( ||/ | (    )|| (    \/  | () () || (   ) || () () |         ");
+                Console.WriteLine(@" \ (_) / | |   | || |   | |   | (____)|| (__      | || || || |   | || || || |         ");
+                Console.WriteLine(@"  \   /  | |   | || |   | |   |     __)|  __)     | |(_)| || |   | || |(_)| |         ");
+                Console.WriteLine(@"   ) (   | |   | || |   | |   | (\ (   | (        | |   | || |   | || |   | |         ");
+                Console.WriteLine(@"   | |   | (___) || (___) |   | ) \ \__| (____/\  | )   ( || (___) || )   ( | _  _  _ ");
+                Console.WriteLine(@"   \_/   (_______)(_______)   |/   \__/(_______/  |/     \|(_______)|/     \|(_)(_)(_)");
+                Console.WriteLine(@"?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|?|");
+                if (money >= totalDebt)
+                {
+                    Console.WriteLine("\n...didn't die and you aren't in debt anymore! Congrats!");
+                    Console.WriteLine("\nYou might owe her a meal or something...after the hospital visit...");
+                }
+                else
+                {
+                    Console.WriteLine("\n...probably isn't angry anymore. But she probably isn't anything anymore. You're sure to follow.");
+                }
             }
             else
             {

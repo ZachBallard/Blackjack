@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Blackjack
@@ -23,9 +24,9 @@ namespace Blackjack
 
         public List<Card> Build()
         {
-            for(int i = 0; i <= numOfDecks; i++)
+            for (int i = 0; i <= numOfDecks; i++)
             {
-                for(int j = 1; j <= 4; j++)
+                for (int j = 1; j <= 4; j++)
                 {
                     for (int k = 1; k <= 13; k++)
                     {
@@ -36,9 +37,31 @@ namespace Blackjack
 
             return mainDeck;
         }
+        public static Random rand = new Random();
         public List<Card> Shuffle()
         {
-            mainDeck.OrderBy(x => Guid.NewGuid()).ToList();
+            int i = mainDeck.Count;
+            while (i > 1)
+            {
+                i--;
+                var k = rand.Next(i + 1);
+                var swap = mainDeck[k];
+                mainDeck[k] = mainDeck[i];
+                mainDeck[i] = swap;
+            }
+
+            Console.Clear();
+            Console.WriteLine("The deck is out of cards...");
+            Console.WriteLine("> Please type anything <");
+            Console.ReadLine();
+            Console.WriteLine("...");
+            Console.WriteLine("...");
+            Console.WriteLine("...");
+            Console.WriteLine("...");
+            Console.WriteLine("...The deck has been shuffled!");
+            Console.WriteLine("> Please type anything <");
+            Console.ReadLine();
+
             return mainDeck;
         }
     }

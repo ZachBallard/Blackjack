@@ -99,11 +99,11 @@ namespace Blackjack
 
                     if (currentPoints > 21)
                     {
-                        Console.WriteLine($"Player has BUSTED");
+                        Console.WriteLine($"{player.name} has BUSTED");
                     }
                     else
                     {
-                        Console.WriteLine($"Player has {currentPoints}");
+                        Console.WriteLine($"{player.name} has {currentPoints}");
                     }
 
                     displayGraphics(dealer.isShowing, player.hand, isdealerGraphicCall);
@@ -123,8 +123,8 @@ namespace Blackjack
                     displayGraphics(dealer.isShowing, dealer.hand, isdealerGraphicCall);
 
                     isdealerGraphicCall = false;
-                    //check for blackjack
 
+                    //check for blackjack
                     bool blackjack = false;
 
                     if (CheckPoints(player.hand) == 21)
@@ -133,8 +133,60 @@ namespace Blackjack
                         blackjack = true;
                     }
 
-                    //not going to impliment at this time
-                    //player.isSplit = willSplit();
+                    //check for split
+                    player.isSplit = willSplit(player.hand);
+
+                    if (player.isSplit)
+                    {
+                        player.bet += player.bet;
+
+                        Card c = player.hand.First();
+                        player.hand2.Add(c);
+                        player.hand.Clear();
+                        player.hand.Add(c);
+
+                        if (deck.mainDeck.Count >= 1)
+                        {
+                            //take card from deck and put in  player hand
+                            Card a = deck.mainDeck.First();
+                            player.hand.Add(a);
+                            deck.mainDeck.RemoveAt(0);
+                        }
+                        else
+                        {
+                            //put discard in maindeck and 
+                            deck.mainDeck.AddRange(deck.discardDeck);
+                            deck.discardDeck.Clear();
+
+                            deck.Shuffle();
+
+                            //take card from deck and put in  player hand
+                            Card a = deck.mainDeck.First();
+                            player.hand.Add(a);
+                            deck.mainDeck.RemoveAt(0);
+                        }
+
+                        if (deck.mainDeck.Count >= 1)
+                        {
+                            //take card from deck and put in  player hand
+                            Card a = deck.mainDeck.First();
+                            player.hand2.Add(a);
+                            deck.mainDeck.RemoveAt(0);
+                        }
+                        else
+                        {
+                            //put discard in maindeck and 
+                            deck.mainDeck.AddRange(deck.discardDeck);
+                            deck.discardDeck.Clear();
+
+                            deck.Shuffle();
+
+                            //take card from deck and put in  player hand
+                            Card a = deck.mainDeck.First();
+                            player.hand2.Add(a);
+                            deck.mainDeck.RemoveAt(0);
+                        }
+                    }
 
                     //handle six card charlie rule (currently only six. could change to any.)
                     bool hasSix = false;
@@ -150,11 +202,11 @@ namespace Blackjack
 
                             if (currentPoints > 21)
                             {
-                                Console.WriteLine($"Player has BUSTED");
+                                Console.WriteLine($"{player.name} has BUSTED");
                             }
                             else
                             {
-                                Console.WriteLine($"Player has {currentPoints}");
+                                Console.WriteLine($"{player.name} has {currentPoints}");
                             }
 
                             displayGraphics(dealer.isShowing, player.hand, isdealerGraphicCall);
@@ -215,21 +267,110 @@ namespace Blackjack
                             }
                         }
 
-                        /*while (player.isSplit)
+                        //handle split situation
+                        if (player.isSplit)
                         {
-                            if (player.CheckPoints() > 21)
+                            Console.WriteLine("You are about to play your second hand...");
+                            Console.WriteLine("> Please type anything <");
+                            Console.ReadLine();
+
+                            while (player.isSplit)
                             {
-                                break;
+                                //display graphics
+                                Console.Clear();
+                                currentPoints = CheckPoints(player.hand);
+
+                                if (currentPoints > 21)
+                                {
+                                    Console.WriteLine($"Hand 1: {player.name} has BUSTED");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Hand 1:{player.name} has {currentPoints}");
+                                }
+                                currentPoints = CheckPoints(player.hand2);
+
+                                if (currentPoints > 21)
+                                {
+                                    Console.WriteLine($"Hand 2: {player.name} has BUSTED");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Hand 2: {player.name} has {currentPoints}");
+                                }
+
+                                displayGraphics(dealer.isShowing, player.hand2, isdealerGraphicCall);
+
+                                isdealerGraphicCall = true;
+                                currentPoints = CheckPoints(dealer.hand);
+
+                                if (currentPoints > 21)
+                                {
+                                    Console.WriteLine($"Dealer has BUSTED");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Dealer has ???");
+                                }
+
+                                displayGraphics(dealer.isShowing, dealer.hand, isdealerGraphicCall);
+
+                                isdealerGraphicCall = false;
+
+                                if (CheckPoints(player.hand) > 21)
+                                {
+                                    break;
+                                }
+
+                                if (player.hand2.Count == 6 && CheckPoints(player.hand2) <= 21)
+                                {
+                                    hasSix = true;
+                                    break;
+                                }
+
+                                if (doHit())
+                                {
+                                    if (deck.mainDeck.Count >= 1)
+                                    {
+                                        //take card from deck and put in  player hand
+                                        Card a = deck.mainDeck.First();
+                                        player.hand2.Add(a);
+                                        deck.mainDeck.RemoveAt(0);
+                                    }
+                                    else
+                                    {
+                                        //put discard in maindeck and 
+                                        deck.mainDeck.AddRange(deck.discardDeck);
+                                        deck.discardDeck.Clear();
+
+                                        deck.Shuffle();
+
+                                        //take card from deck and put in  player hand
+                                        Card a = deck.mainDeck.First();
+                                        player.hand2.Add(a);
+                                        deck.mainDeck.RemoveAt(0);
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
-                            if (hitStay())
+                            //check to see which hand to use
+
+                            if (CheckPoints(player.hand2) > CheckPoints(player.hand) && CheckPoints(player.hand2) <= 21)
                             {
-                                dealer.DealCard(isPlayerTurn);
+                                player.hand.Clear();
+                                player.hand.AddRange(player.hand2);
                             }
                             else
                             {
-                                break;
+                                Console.WriteLine("The first score will be used...");
+                                Console.WriteLine("> Please type anything <");
+                                Console.ReadLine();
                             }
-                        }*/
+
+                        }
 
                         if (!hasSix)
                         {
@@ -244,11 +385,11 @@ namespace Blackjack
 
                                 if (currentPoints > 21)
                                 {
-                                    Console.WriteLine($"Player has BUSTED");
+                                    Console.WriteLine($"{player.name} has BUSTED");
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"Player has {currentPoints}");
+                                    Console.WriteLine($"player.name has {currentPoints}");
                                 }
 
                                 displayGraphics(dealer.isShowing, player.hand, isdealerGraphicCall);
@@ -305,11 +446,11 @@ namespace Blackjack
 
                     if (currentPoints > 21)
                     {
-                        Console.WriteLine($"Player has BUSTED");
+                        Console.WriteLine($"{player.name} has BUSTED");
                     }
                     else
                     {
-                        Console.WriteLine($"Player has {currentPoints}");
+                        Console.WriteLine($"{player.name} has {currentPoints}");
                     }
 
                     displayGraphics(dealer.isShowing, player.hand, isdealerGraphicCall);
@@ -331,10 +472,17 @@ namespace Blackjack
                     isdealerGraphicCall = false;
 
                     //check for results
-                    if (( blackjack || hasSix || CheckPoints(player.hand) > CheckPoints(dealer.hand) || CheckPoints(dealer.hand) > 21) && CheckPoints(player.hand) <= 21)
+                    if(blackjack)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("BLACKJACk!");
+                        Console.WriteLine();
+                    }
+
+                    if ((blackjack || hasSix || CheckPoints(player.hand) > CheckPoints(dealer.hand) || CheckPoints(dealer.hand) > 21) && CheckPoints(player.hand) <= 21)
                     {
                         //show money gained
-                        Console.WriteLine($"\nYou had {player.money}");
+                        Console.WriteLine($"\nYou had ${player.money}");
                         player.money += player.bet;
                         Console.WriteLine($"You now have ${player.money}");
                         playerWins++;
@@ -401,9 +549,13 @@ namespace Blackjack
                         break;
                 }
 
-                if (card.rank > 1 && card.rank < 11)
+                if (card.rank > 1 && card.rank < 10)
                 {
                     rankGraphic = card.rank.ToString();
+                }
+                else if (card.rank == 10)
+                {
+                    rankGraphic = "T";
                 }
                 else if (card.rank == 11)
                 {
@@ -538,11 +690,37 @@ namespace Blackjack
             }
         }
 
-        /* private static bool willSplit()
-         {
-             return true;
-         }
-        */
+        private static bool willSplit(List<Card> playerHand)
+        {
+            string userInput = "";
+
+            var c = playerHand.First();
+            var d = playerHand.Last();
+
+            if (c.rank == d.rank)
+            {
+                while (true)
+                {
+                    Console.WriteLine("\nWould you like to split and double down? (y)es or (n)o");
+                    userInput = Console.ReadLine();
+
+                    switch (userInput)
+                    {
+                        case "y":
+                            return true;
+                        case "n":
+                            return false;
+                        default:
+                            Console.WriteLine("\nThat wasn't a valid selection. Try again.");
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public static int askForBet(int playerMoney)
         {

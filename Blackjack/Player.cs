@@ -11,7 +11,7 @@ namespace Blackjack
         public string name { get; set; }
         public int money { get; set; }
         public List<Card> hand { get; set; }
-        public int splitValue { get; set; }
+        public List<Card> hand2 { get; set; }
         public bool isSplit { get; set; }
         public int bet { get; set; }
 
@@ -19,6 +19,7 @@ namespace Blackjack
         public Player()
         {
             hand = new List<Card>();
+            hand2 = new List<Card>();
         }
     }
 }

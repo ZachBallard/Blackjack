@@ -152,7 +152,10 @@ namespace Blackjack
                     //display graphics
                     Console.Clear();
 
-                    Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                    if (isStory)
+                    {
+                        Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                    }
 
                     int currentPoints = 0;
 
@@ -258,7 +261,10 @@ namespace Blackjack
                             //display graphics
                             Console.Clear();
 
-                            Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                            if (isStory)
+                            {
+                                Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                            }
 
                             currentPoints = CheckPoints(player.hand);
 
@@ -341,7 +347,10 @@ namespace Blackjack
                                 //display graphics
                                 Console.Clear();
 
-                                Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                                if (isStory)
+                                {
+                                    Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                                }
 
                                 currentPoints = CheckPoints(player.hand);
 
@@ -447,7 +456,10 @@ namespace Blackjack
                                 //display graphics
                                 Console.Clear();
 
-                                Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                                if (isStory)
+                                {
+                                    Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                                }
 
                                 currentPoints = CheckPoints(player.hand);
 
@@ -511,7 +523,10 @@ namespace Blackjack
                     //display graphics
                     Console.Clear();
 
-                    Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                    if (isStory)
+                    {
+                        Console.WriteLine($"{player.name} has {gamesLeft} games left");
+                    }
 
                     currentPoints = CheckPoints(player.hand);
 

@@ -43,11 +43,11 @@ namespace Blackjack
                     {
                         //take 2 card from deck and put in  player hand
                         Card a = deck.mainDeck.First();
+                        deck.mainDeck.RemoveAt(0);
                         Card b = deck.mainDeck.First();
+                        deck.mainDeck.RemoveAt(0);
                         player.hand.Add(a);
                         player.hand.Add(b);
-                        deck.mainDeck.RemoveAt(0);
-                        deck.mainDeck.RemoveAt(0);
                     }
                     else
                     {
@@ -59,22 +59,22 @@ namespace Blackjack
 
                         //take 2 card from deck and put in  player hand
                         Card a = deck.mainDeck.First();
+                        deck.mainDeck.RemoveAt(0);
                         Card b = deck.mainDeck.First();
+                        deck.mainDeck.RemoveAt(0);
                         player.hand.Add(a);
                         player.hand.Add(b);
-                        deck.mainDeck.RemoveAt(0);
-                        deck.mainDeck.RemoveAt(0);
                     }
 
                     if (deck.mainDeck.Count >= 2)
                     {
                         //take  2 card from deck and put in  dealer hand
                         Card a = deck.mainDeck.First();
+                        deck.mainDeck.RemoveAt(0);
                         Card b = deck.mainDeck.First();
+                        deck.mainDeck.RemoveAt(0);
                         dealer.hand.Add(a);
                         dealer.hand.Add(b);
-                        deck.mainDeck.RemoveAt(0);
-                        deck.mainDeck.RemoveAt(0);
                     }
                     else
                     {
@@ -86,28 +86,42 @@ namespace Blackjack
 
                         //take 2 card from deck and put in dealer hand
                         Card a = deck.mainDeck.First();
+                        deck.mainDeck.RemoveAt(0);
                         Card b = deck.mainDeck.First();
+                        deck.mainDeck.RemoveAt(0);
                         dealer.hand.Add(a);
                         dealer.hand.Add(b);
-                        deck.mainDeck.RemoveAt(0);
-                        deck.mainDeck.RemoveAt(0);
                     }
 
                     //display graphics
+                    Console.Clear();
                     int currentPoints = 0;
 
-                    currentPoints = CheckPoints(player.hand);
-
-                    Console.WriteLine($"Player has {currentPoints}");
+                    if (currentPoints > 21)
+                    {
+                        Console.WriteLine($"Player has BUSTED");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Player has {currentPoints}");
+                    }
 
                     displayGraphics(dealer.isShowing, player.hand, isdealerGraphicCall);
 
                     isdealerGraphicCall = true;
                     currentPoints = CheckPoints(dealer.hand);
 
+                    if (currentPoints > 21)
+                    {
+                        Console.WriteLine($"Dealer has BUSTED");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Dealer has ???");
+                    }
+
                     displayGraphics(dealer.isShowing, dealer.hand, isdealerGraphicCall);
 
-                    Console.WriteLine($"Dealer has {currentPoints}");
                     isdealerGraphicCall = false;
                     //check for blackjack
 
@@ -131,9 +145,10 @@ namespace Blackjack
                         while (true)
                         {
                             //display graphics
+                            Console.Clear();
                             currentPoints = CheckPoints(player.hand);
 
-                            if (currentPoints == 0)
+                            if (currentPoints > 21)
                             {
                                 Console.WriteLine($"Player has BUSTED");
                             }
@@ -147,26 +162,25 @@ namespace Blackjack
                             isdealerGraphicCall = true;
                             currentPoints = CheckPoints(dealer.hand);
 
-                            displayGraphics(dealer.isShowing, dealer.hand, isdealerGraphicCall);
-
-                            if (currentPoints == 0)
+                            if (currentPoints > 21)
                             {
                                 Console.WriteLine($"Dealer has BUSTED");
                             }
                             else
                             {
-                                Console.WriteLine($"Dealer has {currentPoints}");
+                                Console.WriteLine($"Dealer has ???");
                             }
+
+                            displayGraphics(dealer.isShowing, dealer.hand, isdealerGraphicCall);
 
                             isdealerGraphicCall = false;
 
                             if (CheckPoints(player.hand) > 21)
                             {
-                                player.money -= player.bet;
                                 break;
                             }
 
-                            if (player.hand.Count >= 6)
+                            if (player.hand.Count == 6 && CheckPoints(player.hand) <= 21)
                             {
                                 hasSix = true;
                                 break;
@@ -221,19 +235,14 @@ namespace Blackjack
                         {
                             dealer.isShowing = true;
 
-
-                            if (CheckPoints(dealer.hand) == 21)
-                            {
-                                player.money -= player.bet;
-                            }
-
                             //dealer begins hit chain
-                            while (CheckPoints(dealer.hand) < 16)
+                            while (CheckPoints(dealer.hand) <= 16 && CheckPoints(player.hand) <= 21)
                             {
                                 //display graphics
+                                Console.Clear();
                                 currentPoints = CheckPoints(player.hand);
 
-                                if (currentPoints == 0)
+                                if (currentPoints > 21)
                                 {
                                     Console.WriteLine($"Player has BUSTED");
                                 }
@@ -247,9 +256,7 @@ namespace Blackjack
                                 isdealerGraphicCall = true;
                                 currentPoints = CheckPoints(dealer.hand);
 
-                                displayGraphics(dealer.isShowing, dealer.hand, isdealerGraphicCall);
-
-                                if (currentPoints == 0)
+                                if (currentPoints > 21)
                                 {
                                     Console.WriteLine($"Dealer has BUSTED");
                                 }
@@ -257,6 +264,8 @@ namespace Blackjack
                                 {
                                     Console.WriteLine($"Dealer has {currentPoints}");
                                 }
+
+                                displayGraphics(dealer.isShowing, dealer.hand, isdealerGraphicCall);
 
                                 isdealerGraphicCall = false;
 
@@ -290,6 +299,55 @@ namespace Blackjack
                         }
                     }
 
+                    //display graphics
+                    Console.Clear();
+                    currentPoints = CheckPoints(player.hand);
+
+                    if (currentPoints > 21)
+                    {
+                        Console.WriteLine($"Player has BUSTED");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Player has {currentPoints}");
+                    }
+
+                    displayGraphics(dealer.isShowing, player.hand, isdealerGraphicCall);
+
+                    isdealerGraphicCall = true;
+                    currentPoints = CheckPoints(dealer.hand);
+
+                    if (currentPoints > 21)
+                    {
+                        Console.WriteLine($"Dealer has BUSTED");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Dealer has {currentPoints}");
+                    }
+
+                    displayGraphics(dealer.isShowing, dealer.hand, isdealerGraphicCall);
+
+                    isdealerGraphicCall = false;
+
+                    //check for results
+                    if (( blackjack || hasSix || CheckPoints(player.hand) > CheckPoints(dealer.hand) || CheckPoints(dealer.hand) > 21) && CheckPoints(player.hand) <= 21)
+                    {
+                        //show money gained
+                        Console.WriteLine($"\nYou had {player.money}");
+                        player.money += player.bet;
+                        Console.WriteLine($"You now have ${player.money}");
+                        playerWins++;
+                    }
+                    else
+                    {
+                        //show money lost
+                        Console.WriteLine($"\nYou had ${player.money}");
+                        player.money -= player.bet;
+                        Console.WriteLine($"You now have ${player.money}");
+                        dealerWins++;
+                    }
+
                     //put both hands in discard
                     deck.discardDeck.AddRange(player.hand);
                     player.hand.Clear();
@@ -297,24 +355,11 @@ namespace Blackjack
                     deck.discardDeck.AddRange(dealer.hand);
                     dealer.hand.Clear();
 
-                    //check for results
-                    if (blackjack || hasSix || CheckPoints(player.hand) > CheckPoints(dealer.hand) && CheckPoints(player.hand) > 0)
-                    {
-                        //show money gained
-                        player.money += player.bet;
-                        playerWins++;
-                    }
-                    if(blackjack || hasSix || CheckPoints(player.hand) > CheckPoints(dealer.hand) && CheckPoints(dealer.hand) > 0)
-                    {
-                        //show money lost
-                        player.money -= player.bet;
-                        dealerWins++;
-                    }
-
                     //how to stop dealing
-                    if (player.money < 0)
+                    if (player.money <= 0)
                     {
-                        //show lost all money
+                        Console.WriteLine("> Please type anything <");
+                        Console.ReadLine();
                         break;
                     }
 
@@ -380,21 +425,21 @@ namespace Blackjack
 
                 //print cards
                 // cardNumCounter == 2 && isShowing == false && isdealerGraphicCall == false
-                if(isShowing == false && isdealerGraphicCall == true && cardNumCounter == 2)
+                if (isShowing == false && isdealerGraphicCall == true && cardNumCounter == 2)
                 {
-                    Console.WriteLine(" ___ ");
-                    Console.WriteLine($"|   |");
-                    Console.WriteLine($"| ? |");
-                    Console.WriteLine($"|   |");
-                    Console.WriteLine("|___|");
+                    Console.WriteLine(" _____");
+                    Console.WriteLine($"|?   ?|");
+                    Console.WriteLine($"|  ?  |");
+                    Console.WriteLine($"|?   ?|");
+                    Console.WriteLine("|_____|");
                 }
                 else
                 {
-                    Console.WriteLine(" ___ ");
-                    Console.WriteLine($"|{rankGraphic} {rankGraphic}|");
-                    Console.WriteLine($"| {suitGraphic} |");
-                    Console.WriteLine($"|{rankGraphic} {rankGraphic}|");
-                    Console.WriteLine("|___|");
+                    Console.WriteLine(" _____");
+                    Console.WriteLine($"|{rankGraphic}   {rankGraphic}|");
+                    Console.WriteLine($"|  {suitGraphic}  |");
+                    Console.WriteLine($"|{rankGraphic}   {rankGraphic}|");
+                    Console.WriteLine("|_____|");
                 }
 
                 cardNumCounter++;
@@ -424,14 +469,7 @@ namespace Blackjack
                 total -= 10 * aceCounter;
             }
 
-            if (total <= 21)
-            {
-                return total;
-            }
-            else
-            {
-                return 0;
-            }
+            return total;
         }
 
         private static bool playAgain(string playerName)
@@ -468,9 +506,9 @@ namespace Blackjack
                 switch (userInput)
                 {
                     case "y":
-                        return false;
-                    case "n":
                         return true;
+                    case "n":
+                        return false;
                     default:
                         Console.WriteLine("\nThat wasn't a valid selection. Try again.");
                         break;
@@ -509,19 +547,22 @@ namespace Blackjack
         public static int askForBet(int playerMoney)
         {
             string userInput = "";
+            int result;
 
             while (true)
             {
                 Console.WriteLine($"\nHow much would you like to bet? (You have ${playerMoney} to bet)");
                 userInput = Console.ReadLine();
-
-                if (int.Parse(userInput) <= playerMoney)
+                if (int.TryParse(userInput, out result))
                 {
-                    return int.Parse(userInput);
-                }
-                else if (int.Parse(userInput) > playerMoney)
-                {
-                    Console.WriteLine($"\nYou only have ${playerMoney} to bet!");
+                    if (result <= playerMoney)
+                    {
+                        return int.Parse(userInput);
+                    }
+                    else if (result > playerMoney)
+                    {
+                        Console.WriteLine($"\nYou only have ${playerMoney} to bet!");
+                    }
                 }
                 else
                 {

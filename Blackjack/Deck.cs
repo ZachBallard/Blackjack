@@ -14,6 +14,8 @@ namespace Blackjack
 
         public Deck(int deckNumber)
         {
+            mainDeck = new List<Card>();
+            discardDeck = new List<Card>();
             numOfDecks = deckNumber;
             mainDeck = Build();
             mainDeck = Shuffle();
@@ -25,9 +27,9 @@ namespace Blackjack
             {
                 for(int j = 1; j <= 4; j++)
                 {
-                    for (int k = 0; j <= 13; k++)
+                    for (int k = 1; k <= 13; k++)
                     {
-                        mainDeck.Add(new Card (j, k));
+                        mainDeck.Add(new Card(j, k));
                     }
                 }
             }

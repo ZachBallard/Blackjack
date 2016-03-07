@@ -11,6 +11,12 @@ namespace Blackjack
         public List<Card> hand { get; set; }
         public bool isShowing { get; set; }
 
+
+        public Dealer()
+        {
+            hand = new List<Card>();
+        }
     }
+
 
 }

@@ -51,7 +51,7 @@ namespace Blackjack
             }
 
             Console.Clear();
-            Console.WriteLine("The deck is out of cards...");
+            Console.WriteLine("\nThe deck is out of cards...");
             Console.WriteLine("> Please type anything <");
             Console.ReadLine();
             Console.WriteLine("...");

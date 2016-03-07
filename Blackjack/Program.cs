@@ -34,17 +34,18 @@ namespace Blackjack
             //game setup
             while (!exit)
             {
-    
+
                 isStory = isPlayingStory();
 
                 if (!isStory)
                 {
+                    Console.Clear();
                     player.money = howMuchMoney();
                     startMoney = player.money;
                     deckNumber = getDeckNumber();
-                    
+
                 }
-               else
+                else
                 {
                     player.money = 217;
                     startMoney = player.money;
@@ -74,7 +75,7 @@ namespace Blackjack
                 }
 
                 var deck = new Deck(deckNumber);
-                
+
                 //actual dealing
                 while (true)
                 {
@@ -542,7 +543,7 @@ namespace Blackjack
                     isdealerGraphicCall = false;
 
                     //check for results
-                    if(blackjack)
+                    if (blackjack)
                     {
                         Console.WriteLine();
                         Console.WriteLine("BLACKJACk!");
@@ -897,22 +898,25 @@ namespace Blackjack
         {
             string userInput = "";
 
+            int deckNum = 0;
+
             while (true)
             {
-                Console.WriteLine($"\nWould you like to use (1) or (7) decks?");
+                Console.WriteLine($"\nHow many decks do you want to use?");
                 userInput = Console.ReadLine();
 
-                switch (userInput)
+                int.TryParse(userInput, out deckNum);
+
+                if(deckNum > 0)
                 {
-                    case "1":
-                        return 1;
-                    case "7":
-                        return 7;
-                    default:
-                        Console.WriteLine("\nThat wasn't a valid selection. Try again.");
-                        break;
+                    return deckNum;
+                }
+                else
+                {
+                    Console.WriteLine("\nThat wasn't a valid selection. Try again.");
                 }
             }
+
         }
 
         private static string whatIsName()
@@ -949,7 +953,10 @@ namespace Blackjack
                 Console.WriteLine(@"| '--'Y| '--'O| '--'U| '--''| '--'R| '--'E| ((0)| '--'B| '--'R| '--'O| '--'K| '--'E| '--'!|");
                 Console.WriteLine(@"`------`------`------`------`------`------'  '-'`------`------`------`------`------`------'");
                 Console.WriteLine(@"(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)(damn)0");
-                Console.WriteLine("\nAnd you're Mother is too. The worse sort of way.\nYou're sure to follow...");
+                if (isStory)
+                {
+                    Console.WriteLine("\nAnd you're Mother is too. The worse sort of way.\nYou're sure to follow...");
+                }
             }
             else if (money > startMoney && !isStory)
             {
@@ -963,6 +970,8 @@ namespace Blackjack
                 Console.WriteLine(@"\$$    $$ \$$     \  \$$  $$      | $$      \$$    $$| $$ \$$    $$| $$\");
                 Console.WriteLine(@" \$$$$$$   \$$$$$$$   \$$$$        \$$       \$$$$$$$ \$$  \$$$$$$$ \$$/");
                 Console.WriteLine(@"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                Console.WriteLine("\nI'm not made in a way that I can judge how much you earned, but...");
+                Console.WriteLine("\nit is still probably better this was a game. (A fantastic one! Am I right? No?)");
             }
             else if (isStory)
             {
@@ -997,10 +1006,11 @@ namespace Blackjack
                 Console.WriteLine(@"| $$  \$$$ \$$    $$  | $$         | $$    $$| $$  | $$ \$$    $$| $$  \$$\| $$     \|  \");
                 Console.WriteLine(@" \$$   \$$  \$$$$$$    \$$          \$$$$$$$  \$$   \$$  \$$$$$$  \$$   \$$ \$$$$$$$$ \$$");
                 Console.WriteLine(@"(!Winning)(!Winning)(!Winning)(!Winning)(!Winning)(!Winning)(!Winning)(!Winning)(!Winning)");
+                Console.WriteLine("\nBut you certainly aren't richer. All is right in the world.");
             }
 
             Console.WriteLine();
-            Console.WriteLine($"\nYou started with {startMoney} and ended with {money}");
+            Console.WriteLine($"\nYou started with ${startMoney} and ended with ${money}");
             Console.WriteLine($"\nOut of {numOfGames} games:");
             Console.WriteLine($"Player wins: {playerWins} Player Loses: {dealerWins}");
             //add value based heckling?

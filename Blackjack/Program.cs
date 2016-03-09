@@ -35,7 +35,7 @@ namespace Blackjack
             while (!exit)
             {
 
-                isStory = isPlayingStory();
+                isStory = IsPlayingStory();
 
                 if (!isStory)
                 {
@@ -67,7 +67,7 @@ namespace Blackjack
                     //story mode buy time
                     if (player.Money > 500 && isStory)
                     {
-                        willBuyTime = askForBuyTime();
+                        willBuyTime = AskForBuyTime();
 
                         if (willBuyTime)
                         {
@@ -500,7 +500,7 @@ namespace Blackjack
                 Console.WriteLine($"{player.Name} has {currentPoints}");
             }
 
-            displayGraphics(dealer.IsShowing, player.Hand, isdealerGraphicCall);
+            DisplayGraphics(dealer.IsShowing, player.Hand, isdealerGraphicCall);
 
             isdealerGraphicCall = true;
             currentPoints = CheckPoints(dealer.Hand);
@@ -514,12 +514,12 @@ namespace Blackjack
                 Console.WriteLine($"Dealer has {currentPoints}");
             }
 
-            displayGraphics(dealer.IsShowing, dealer.Hand, isdealerGraphicCall);
+            DisplayGraphics(dealer.IsShowing, dealer.Hand, isdealerGraphicCall);
 
             isdealerGraphicCall = false;
         }
 
-        private static bool askForBuyTime()
+        private static bool AskForBuyTime()
         {
             string userInput = "";
 
@@ -541,7 +541,7 @@ namespace Blackjack
             }
         }
 
-        private static bool isPlayingStory()
+        private static bool IsPlayingStory()
         {
             string userInput = "";
 
@@ -563,7 +563,7 @@ namespace Blackjack
             }
         }
 
-        private static void displayGraphics(bool isShowing, List<Card> hand, bool isdealerGraphicCall)
+        private static void DisplayGraphics(bool isShowing, List<Card> hand, bool isdealerGraphicCall)
         {
             int cardNumCounter = 1;
 
@@ -612,12 +612,11 @@ namespace Blackjack
                 else
                 {
                     rankGraphic = "A";
-                };
-
+                }
 
                 //print cards
                 // cardNumCounter == 2 && isShowing == false && isdealerGraphicCall == false
-                if (isShowing == false && isdealerGraphicCall == true && cardNumCounter == 2)
+                if (!isShowing && isdealerGraphicCall && cardNumCounter == 2)
                 {
                     Console.WriteLine(" _____");
                     Console.WriteLine($"|?   ?|");

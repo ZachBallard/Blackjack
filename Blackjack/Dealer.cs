@@ -8,13 +8,13 @@ namespace Blackjack
 {
     class Dealer
     {
-        public List<Card> hand { get; set; }
-        public bool isShowing { get; set; }
+        public List<Card> Hand { get; set; }
+        public bool IsShowing { get; set; }
 
 
         public Dealer()
         {
-            hand = new List<Card>();
+            Hand = new List<Card>();
         }
     }
 

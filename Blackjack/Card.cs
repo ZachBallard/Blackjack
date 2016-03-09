@@ -9,7 +9,7 @@ namespace Blackjack
     class Card
     {
 
-        public int suit { get;set; }
+        public int Suit { get;set; }
 
         /* HEARTS = 1,
            SPADES = 2,
@@ -17,7 +17,7 @@ namespace Blackjack
            DIAMOND = 4,
          */
 
-        public int rank { get; set; }
+        public int Rank { get; set; }
   
          /* Ace= 1,
             Two = 2,
@@ -34,34 +34,24 @@ namespace Blackjack
             King = 13
          */
 
-        public int cardValue { get; set; }
+        public int CardValue { get; set; }
 
         public Card(int s, int r)
         {
-            suit = s;
-            rank = r;
+            Suit = s;
+            Rank = r;
             if(r == 1)
             {
-                cardValue = 11;
+                CardValue = 11;
             }
             else if (r <= 10 && r >1)
             {
-                cardValue = r;
+                CardValue = r;
             }
             else
             {
-                cardValue = 10;
+                CardValue = 10;
             }
         }
-        
-        /* __________
-          |          |
-          | {r}  {r} |
-          |          |
-          |  {suit}  |
-          |          |
-          | {r}  {r} |
-          |__________|        
-        */
     }
 }

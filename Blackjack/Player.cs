@@ -8,18 +8,18 @@ namespace Blackjack
 {
     class Player
     {
-        public string name { get; set; }
-        public int money { get; set; }
-        public List<Card> hand { get; set; }
-        public List<Card> hand2 { get; set; }
-        public bool isSplit { get; set; }
-        public int bet { get; set; }
+        public string Name { get; set; }
+        public int Money { get; set; }
+        public List<Card> Hand { get; set; }
+        public List<Card> Hand2 { get; set; }
+        public bool IsSplit { get; set; }
+        public int Bet { get; set; }
 
 
         public Player()
         {
-            hand = new List<Card>();
-            hand2 = new List<Card>();
+            Hand = new List<Card>();
+            Hand2 = new List<Card>();
         }
     }
 }

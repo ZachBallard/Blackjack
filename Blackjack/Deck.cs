@@ -9,45 +9,45 @@ namespace Blackjack
 {
     class Deck
     {
-        public int numOfDecks { get; set; }
-        public List<Card> mainDeck { get; set; }
-        public List<Card> discardDeck { get; set; }
+        public int NumOfDecks { get; set; }
+        public List<Card> MainDeck { get; set; }
+        public List<Card> DiscardDeck { get; set; }
 
         public Deck(int deckNumber)
         {
-            mainDeck = new List<Card>();
-            discardDeck = new List<Card>();
-            numOfDecks = deckNumber;
-            mainDeck = Build();
-            mainDeck = Shuffle();
+            MainDeck = new List<Card>();
+            DiscardDeck = new List<Card>();
+            NumOfDecks = deckNumber;
+            MainDeck = Build();
+            MainDeck = Shuffle();
         }
 
         public List<Card> Build()
         {
-            for (int i = 0; i <= numOfDecks; i++)
+            for (int i = 0; i <= NumOfDecks; i++)
             {
                 for (int j = 1; j <= 4; j++)
                 {
                     for (int k = 1; k <= 13; k++)
                     {
-                        mainDeck.Add(new Card(j, k));
+                        MainDeck.Add(new Card(j, k));
                     }
                 }
             }
 
-            return mainDeck;
+            return MainDeck;
         }
-        public static Random rand = new Random();
+        public static Random Rand = new Random();
         public List<Card> Shuffle()
         {
-            int i = mainDeck.Count;
+            int i = MainDeck.Count;
             while (i > 1)
             {
                 i--;
-                var k = rand.Next(i + 1);
-                var swap = mainDeck[k];
-                mainDeck[k] = mainDeck[i];
-                mainDeck[i] = swap;
+                var k = Rand.Next(i + 1);
+                var swap = MainDeck[k];
+                MainDeck[k] = MainDeck[i];
+                MainDeck[i] = swap;
             }
 
             Console.Clear();
@@ -62,7 +62,7 @@ namespace Blackjack
             Console.WriteLine("> Please type anything <");
             Console.ReadLine();
 
-            return mainDeck;
+            return MainDeck;
         }
     }
 }

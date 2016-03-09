@@ -295,7 +295,7 @@ namespace Blackjack
 
                             isdealerGraphicCall = false;
 
-                            if (CheckPoints(player.hand) > 21)
+                            if (CheckPoints(player.hand) >= 21)
                             {
                                 break;
                             }
@@ -391,7 +391,7 @@ namespace Blackjack
 
                                 isdealerGraphicCall = false;
 
-                                if (CheckPoints(player.hand2) > 21)
+                                if (CheckPoints(player.hand2) >= 21)
                                 {
                                     break;
                                 }
